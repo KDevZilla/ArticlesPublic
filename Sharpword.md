@@ -1,3 +1,5 @@
+https://github.com/KDevZilla/Sharpword
+
 # Introduction
 
 ![Game Animation](https://raw.githubusercontent.com/KDevZilla/Resource/main/SharpWord01.gif)
@@ -857,7 +859,7 @@ and increase the size of the image until it reaches its original size.
 
 
 Step 1-6 is to calculate the position of the label  
-We need to draw. 
+We need to draw.  
 Step7 is the actual step that draw  
 the label image.  
 
@@ -1024,7 +1026,7 @@ relate to the UI and animation which difficult to automate tests.
 ![SharpWord_UnitTest](https://user-images.githubusercontent.com/108615376/202790910-21bce08e-8bf4-43cb-ba65-b672473f9d1c.png)
 
 
-## Points of Interest  
+## Know Issues 
 I tried searching but couldn't find any examples of flipping images and other animations,  
 so I created my own function.  
 I try to use Timer, Thread.Sleep(), Application.DoEvents()   
