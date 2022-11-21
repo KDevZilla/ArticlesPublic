@@ -6,6 +6,8 @@ https://github.com/KDevZilla/Sharpword
 
 This is a clone of Josh Wardle, a Welsh software engineer, and his well-known Wordle game.  
 I created this game to evaluate my ability to perform simple animations using Windows Form.  
+# How to play
+![SharpWorld_Screen03](https://user-images.githubusercontent.com/108615376/203107728-aed3f0a9-ff7c-46f8-8282-ffa20c41b007.png)
 
 # File Structure
 
@@ -27,9 +29,9 @@ All of the Game logic is in the Game folder
 This class used to store the character and the result of the Word object.\
 The Alphabet object itself does not have the ability to verify the result.\
 the possibility  of the result is\
-CorrectSpot,
-WrongSpot,
-NoninThWord
+CorrectSpot,  
+WrongSpot,  
+NoninTheWord  
 
 	
 
@@ -40,8 +42,52 @@ The InCorrect() method assigns the result to the Alphabet object\
 in the lstAlphabet in addition to determining whether the result is accurate.\
 We must keep the result in Alphabet so that the UI object may use it to render the tile.
 
+
+First I would like to talk about the incorrect result. 
+Here is the first version I created.  
+The Answer is AMPLY.  
+
+![SharpWord_Incorrect_TileResult](https://user-images.githubusercontent.com/108615376/203107133-70679069-ba50-469d-bb3c-6cc38f501e77.png)  
+
+As you see, the program renders the first P using yellow as an indication that the P alphabet exists in an answer  
+but it is not in the correct position.  
+
+The problem is according to the Wordle rule if the answer only has one P, 
+and the second P is already in the correct position.  
+The first P cannot be yellow, it cannot be counted as "Incorrect position",  
+It must be counted as "Not in the word".  
+I got informed about this bug, so I fixed it.  
+This is an example of a correct program.  
+![SharpWordTiltSample](https://user-images.githubusercontent.com/108615376/203108422-d9dd3cfc-7f51-4cc8-a9e4-5d3f0b3c8021.PNG)
+
+
+
+1. P is yellow because it exits in an answer but is in the incorrect position.  
+2. The first P is gray, and the second P is green because  
+   the second P is in the correct position.  
+3. The first and the third P is gray, the second P is green.  
+
+
+Here is the algorithm
+
+In this case I will use a variable AnswerWord as an answer  
+and I will lstAlphabet as a list that contains what user enter.  
+
+0. Create a variable List<Boolen> lstHasCheckedAlpha to store if the   
+	character in the answer has check.
+	
+1. loop thought all of the characters in the lstAlphabet.  
+	set default value lstAlphabet[i] to NotinTheWord  
+	if the lstAlphabet[i] match with AnswerWord[i] then  
+		set lstHashCheckedAlpha[i] to true so that we know that this position has checked  
+		set the result to CorrectSpot.  
+2. loop thogut all of the characters in the lstAlphabet again.  
+    if the lstAlphabet[i] match with any AnswerWord[n] and  
+	        lstHashCheckedAlpha[n] is false then  
+			set the result to InCorrectSpot.  
+	
 ```C#
- public Boolean IsCorrect(Word AnswerWord)
+        public Boolean IsCorrect(Word AnswerWord)
         {
             int i = 0;
 
@@ -50,33 +96,125 @@ We must keep the result in Alphabet so that the UI object may use it to render t
             {
                 IsCorrect = false;
             }
-	    /* Check all of the Alphabet in lstAlphabet
-	     If there is at least one Alphabet
-	     That the result is not AlphaResult.CorrectSpot
-	     This function return false, otherwise return true.
-	     */
+            // Set CorrectSpot
+            List<Boolean> lstHasCheckedAlpha = new List<bool>();
+            // Step 1
             for (i = 0; i < lstAlphabet.Count ; i++)
             {
                 Alphabet AlphaAnswer = AnswerWord.lstAlphabet[i];
                 lstAlphabet[i].Result = AlphaResult.NotinTheWord;
-
+                lstHasCheckedAlpha.Add(false);
                 if(lstAlphabet [i].Character == AlphaAnswer.Character  )
                 {
                     lstAlphabet[i].Result = AlphaResult.CorrectSpot;
-                } else
+                    lstHasCheckedAlpha[i] = true;
+                }
+            }
+            // Step 2
+            for (i = 0; i < lstAlphabet.Count; i++)
+            {
+
+                int j;
+                for (j = 0; j < lstAlphabet.Count; j++)
                 {
-                    if(AnswerWord.IsItContainChar (lstAlphabet [i].Character ))
+                    if (i == j ||
+                        lstHasCheckedAlpha[j]) {
+                        continue;
+                    }
+                    Alphabet AlphaAnswer = AnswerWord.lstAlphabet[j];
+
+                    if (lstAlphabet[i].Character == AlphaAnswer.Character)
                     {
+
+                        lstHasCheckedAlpha[j] = true;
                         lstAlphabet[i].Result = AlphaResult.WrongSpot;
                     }
                 }
-                if(lstAlphabet [i].Result == AlphaResult.NotinTheWord ||
-                    lstAlphabet [i].Result == AlphaResult.WrongSpot )
+            }
+
+            for (i = 0; i < lstAlphabet.Count; i++)
+            {
+                if (lstAlphabet[i].Result == AlphaResult.NotinTheWord ||
+                    lstAlphabet[i].Result == AlphaResult.WrongSpot)
                 {
                     IsCorrect = false;
                 }
             }
             return IsCorrect;
+
+        }
+```
+	
+I wil also use these 2 images as an example.  
+![SharpWordTiltCalculate_01](https://user-images.githubusercontent.com/108615376/203115167-25334c28-f6d4-4acd-bad9-39964e19957a.PNG)
+The first step, program cannot find any matching alphabet.  
+The second step, it found out that P is incorrect position.  
+	
+	
+![SharpWordTiltCalculate_02](https://user-images.githubusercontent.com/108615376/203115199-2a646d4c-acac-438a-8fb6-ffbc4fc683bf.PNG)
+The first step, program found that the Alphabet at postion 1, 3, 4 matches with the Answer.  
+So it set the result to Alphabet 1, 3, 4 to CorrectPosition (Green color) 
+and it also set that the postion 1, 3, 4 has checked.  
+So it will not allow to check again (You see black color)  
+	
+THe second step, 
+	It check P with M, Y so it set the result to NotinTheWord.  
+	It check E with M, Y so it set the result to NotinTheWord.
+	
+	
+```C#
+	//Unit/Integreation Test No5. (We also have other test)
+	[TestMethod]
+        public void TestAnswer05()
+        {
+            String filePath = WordFilePath;
+            ISharpWordUI UI = new SharpWord.UI.MockUI();
+
+
+            SharpWord.Game.SharpWordGame game = new SharpWord.Game.SharpWordGame(UI, filePath);
+            game.SetWordAnswerForTestingPurpose(@"AMPLY");
+
+            int iCurrentIndex = game.CurrentWordIndex;
+            Assert.IsTrue(iCurrentIndex == 0);
+
+            AnswerResultEnum Result = AnswerResultEnum.InTheWordListButNotCorrect;
+            SharpWordGame.GameStateEnum GameState = GameStateEnum.Playing;
+            Answer(game, "POINT");
+            iCurrentIndex = game.CurrentWordIndex;
+            Result = game.LatestResult;
+            GameState = game.GameState;
+            System.Collections.Generic.List<Alphabet> lstAlpha = game.PreviousGuessWord.lstAlphabet;
+           
+            Assert.IsTrue(lstAlpha[0].Result == AlphaResult.WrongSpot);
+            Assert.IsTrue(lstAlpha[1].Result == AlphaResult.NotinTheWord );
+            Assert.IsTrue(lstAlpha[2].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[3].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[4].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue (game.GameState == GameStateEnum.Playing);
+
+            Answer(game, "APPLY");
+            lstAlpha = game.PreviousGuessWord.lstAlphabet;
+
+            Assert.IsTrue(lstAlpha[0].Result == AlphaResult.CorrectSpot );
+            Assert.IsTrue(lstAlpha[1].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[2].Result == AlphaResult.CorrectSpot );
+            Assert.IsTrue(lstAlpha[3].Result == AlphaResult.CorrectSpot );
+            Assert.IsTrue(lstAlpha[4].Result == AlphaResult.CorrectSpot);
+            Assert.IsTrue(game.GameState == GameStateEnum.Playing);
+
+            Answer(game, "PUPPY");
+            lstAlpha = game.PreviousGuessWord.lstAlphabet;
+
+            Assert.IsTrue(lstAlpha[0].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[1].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[2].Result == AlphaResult.CorrectSpot);
+            Assert.IsTrue(lstAlpha[3].Result == AlphaResult.NotinTheWord);
+            Assert.IsTrue(lstAlpha[4].Result == AlphaResult.CorrectSpot);
+            Assert.IsTrue(game.GameState == GameStateEnum.Playing);
+
+            Answer(game, "AMPLY");
+            lstAlpha = game.PreviousGuessWord.lstAlphabet;
+            Assert.IsTrue(game.GameState == GameStateEnum.Finished);
 
         }
 ```
@@ -1023,8 +1161,8 @@ You can run a unit or integration test on a test project.
 There are not many test methods here because most of the code in this project  
 relate to the UI and animation which difficult to automate tests.  
 
-![SharpWord_UnitTest](https://user-images.githubusercontent.com/108615376/202790910-21bce08e-8bf4-43cb-ba65-b672473f9d1c.png)
 
+![SharpWord_UnitTest](https://user-images.githubusercontent.com/108615376/203118901-a0943d75-7b69-4173-88e9-09619a95f26d.png)
 
 ## Know Issues 
 I tried searching but couldn't find any examples of flipping images and other animations,  
@@ -1036,6 +1174,12 @@ The thing is, each of these methods has drawbacks, and the code appears complica
 I will be more than happy if you use this code,  
 but I also hope you discover a more effective technique if you need to flip an image in your application.
 
+## Point of Interest
+One of the problem to develop this project is  
+It requires you to test with the actual Wordle to learn the requirment
+and you are allowed to play it 1 time per day and when you try to test the specific case for example  
+the case that consists of a duplicate alphabet but you cannot choose the world you need to test.
+				
 ### Reference code  
 ToggleCheckbox original code  
 https://stackoverflow.com/questions/38431674/toggle-switch-control-in-windows-forms
