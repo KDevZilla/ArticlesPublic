@@ -1174,11 +1174,11 @@ The thing is, each of these methods has drawbacks, and the code appears complica
 I will be more than happy if you use this code,  
 but I also hope you discover a more effective technique if you need to flip an image in your application.
 
-## Point of Interest
-One of the problem to develop this project is  
-It requires you to test with the actual Wordle to learn the requirment
-and you are allowed to play it 1 time per day and when you try to test the specific case for example  
-the case that consists of a duplicate alphabet but you cannot choose the world you need to test.
+## Point of Interest 
+One of the challenges with developing this project is that  
+you must test with the real Wordle to learn the requirements,  
+and you are only allowed to play it once per day when you try to test a particular case,  
+like the case where there are duplicate letters. However, you are not allowed to select the world you need to test.  
 				
 ### Reference code  
 ToggleCheckbox original code  
