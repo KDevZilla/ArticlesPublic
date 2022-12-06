@@ -2107,15 +2107,15 @@ You can click on Game->Show MiniMax Latest Move menu.
 Please make sure that Player 2 is a bot.  
 
 Explain some of the value in this picture.   
--120[D2]Min mean  
--120 is the min value of these below nodes (0, -22, -81, -120, 67, 99, 9, 67, -51)   
+9[F5]Min mean  
+9 is the min value of these below nodes (9, 10, 10, 10, 10, 10)   
 	
-62[F3] Max mean  
-62 is the max value of the below nodes (62, -90, -21, -25, -3)  
+12[] Max mean  
+12 is the max value of the below nodes (9, 7, 12, 7)  
 
-0[C1] Leaf mean
+-4[D1] Leaf mean
 This is a leaf node, the evaluation function was executed on this node  
-the value 0.
+the value -4.
 	
 	
 
