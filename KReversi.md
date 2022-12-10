@@ -2150,5 +2150,7 @@ https://stackoverflow.com/questions/21325661/convert-an-image-selected-by-path-t
 
 
 
+This article was also published on codeproject  
+https://www.codeproject.com/Articles/5348843/KReversi-Learn-to-Implement-Minimax-Algorithm-by-C
 
 	
