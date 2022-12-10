@@ -1193,3 +1193,7 @@ https://www.nuget.org/packages/dot-net-transitions/
 ### Reference  
 Wordle  
 https://www.nytimes.com/games/wordle/index.html
+
+				
+This article was also published on codeproject  
+https://www.codeproject.com/Articles/5347429/Sharpword-A-Wordle-Clone-Using-Csharp  
