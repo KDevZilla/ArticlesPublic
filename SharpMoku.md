@@ -21,7 +21,7 @@ The winner is the player who succeeds in doing so first.
 - It supports both images or colors for the stone and the board.  
 - Support various types of themes.  
   
-![UI](https://raw.githubusercontent.com/KDevZilla/ImageUpload/main/SharpMoku/SharpMoku02.png)    
+![UI](https://raw.githubusercontent.com/KDevZilla/ImageUpload/main/SharpMoku/SharpMoku02_Small.png)    
 
 ### UI
 This is a simple Gomoku program so we only need a form that contains one component to render the board.  
