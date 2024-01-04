@@ -899,6 +899,8 @@ https://en.wikipedia.org/wiki/Gomoku
 https://blog.theofekfoundation.org/artificial-intelligence/2015/12/11/minimax-for-gomoku-connect-five/  
 https://codepen.io/mudrenok/pen/gpMXgg  
 
+### This article also published on  
+https://www.codeproject.com/Articles/5375122/SharpMoku-a-Gomoku-Five-in-a-row-written-in-Csharp
 
 
 
