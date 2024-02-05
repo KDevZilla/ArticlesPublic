@@ -1177,3 +1177,6 @@ The algorithm to draw the border is
 ```
 ### Reference
 https://en.wikipedia.org/wiki/KenKen
+
+This article also published at 
+https://www.codeproject.com/Articles/5375124/Kaldoku-game
